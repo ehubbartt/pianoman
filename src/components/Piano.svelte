@@ -1,27 +1,55 @@
 <script lang="ts">
-  import { NOTES } from "../constants/notes";
+  import { KEYBOARD_BLACK_KEYS, NOTES, KEYBOARD_WHITE_KEYS, BLACK_NOTES, WHITE_NOTES } from "../constants/notes";
 
   let keyRefs: any = [];
   let audioRefs: any = [];
 
-  const handleKeyPress = (index: number) => {
-    if(keyRefs[index] instanceof HTMLElement) {
-      const audio = audioRefs[index];
-      if(audio) {
-        audio.currentTime = 0;
-        audio.play();
+  $: pressedKey = "";
+
+  const handleMouseDown = (index: number) => {
+    pressedKey = NOTES[index];
+    const curKeyRef = keyRefs[index];
+
+    if(curKeyRef instanceof HTMLElement) {
+      const curAudioRef = audioRefs[index];
+      if(curAudioRef) {
+        curAudioRef.currentTime = 0;
+        curAudioRef.play();
       }
     }
   };
 
+  const handleMouseUp = () => {
+    pressedKey = "";
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    const key = event.key;
+    const whiteNoteIndex = KEYBOARD_WHITE_KEYS.indexOf(key);
+    const blackNoteIndex = KEYBOARD_BLACK_KEYS.indexOf(key);
+
+    if(whiteNoteIndex > -1) {
+      handleMouseDown(NOTES.indexOf(WHITE_NOTES[whiteNoteIndex]));
+    } else if(blackNoteIndex > -1) {
+      handleMouseDown(NOTES.indexOf(BLACK_NOTES[blackNoteIndex]));
+    }
+  };
+
+  const handleKeyUp = () => {
+    handleMouseUp();
+  };
+
 </script>
 
+<svelte:window on:keydown={handleKeyDown} on:keyup={handleKeyUp} />
 <div class="piano-container">
   {#each NOTES as item, i}
     <div bind:this={keyRefs[i]} 
     data-note={item} 
     class={item.length < 2 ? "key white" : "key black"} 
-    on:click={()=>handleKeyPress(i)}/>
+    class:pressed={pressedKey === item}
+    on:mouseup={() => handleMouseUp()}
+    on:mousedown={()=>handleMouseDown(i)}/>
   {/each}
 </div>
 
@@ -73,10 +101,12 @@
   .key {
     cursor: pointer;
     overflow: show;
+    transition: all 0.2s ease-in-out;
   }
 
   .pressed {
-    transform:translateY(--box-shadow-height)
+    height: calc(var(--white-key-height) + var(--box-shadow-height));
+    box-shadow: none;
   }
 
 
