@@ -44,9 +44,9 @@
 <svelte:window on:keydown={handleKeyDown} on:keyup={handleKeyUp} />
 <div class="piano-container">
   {#each NOTES as item, i}
-    <div bind:this={keyRefs[i]} 
-    data-note={item} 
-    class={item.length < 2 ? "key white" : "key black"} 
+    <div bind:this={keyRefs[i]}
+    data-note={item}
+    class={item.length < 2 ? "key white" : "key black"}
     class:pressed={pressedKey === item}
     on:mouseup={() => handleMouseUp()}
     on:mousedown={()=>handleMouseDown(i)}/>
@@ -68,30 +68,40 @@
 
   .piano-container {
     display: flex;
-    background-color: rgb(209, 209, 209);
-    position: relative;
+    max-height: var(--white-key-height);
   }
 
   .white {
     border: 1px solid #000;
     width: var(--white-key-width);
     height: var(--white-key-height);
-    background-color: white;
-    box-shadow: 0px var(--box-shadow-height) 0px black;
+    background:linear-gradient(to bottom,#eee 0%,#fff 100%);
+    border-radius: 0 0 5px 5px;
+    box-shadow:-1px 0 0 rgba(255,255,255,0.8) inset,0 0 5px #ccc inset,0 0 3px rgba(0,0,0,0.2);
+  }
+
+  .white:first-child {
+    border-radius:5px 0 5px 5px
+  }
+
+  .white:last-child {
+    border-radius:0 5px 5px 5px
   }
 
   .white:hover {
-    background-color: #cfcfcf;
+    background-color: #ececec;
   }
 
   .black {
     border: 1px solid #000;
     width: var(--black-key-width);
     height: var(--black-key-height);
-    background-color: black;
+    background:linear-gradient(45deg,#222 0%,#555 100%);
     z-index: 100;
+    box-shadow:-1px -1px 2px rgba(255,255,255,0.2) inset,0 -5px 2px 3px rgba(0,0,0,0.6) inset,0 2px 4px rgba(0,0,0,0.5);
     margin-left: calc(var(--black-key-width) / -2);
     margin-right: calc(var(--black-key-width) / -2);
+    border-radius: 0 0 3px 3px;
   }
 
   .black:hover {
@@ -100,13 +110,15 @@
 
   .key {
     cursor: pointer;
-    overflow: show;
     transition: all 0.2s ease-in-out;
   }
 
-  .pressed {
-    height: calc(var(--white-key-height) + var(--box-shadow-height));
-    box-shadow: none;
+  .pressed.white {
+    box-shadow:2px 0 3px rgba(0,0,0,0.1) inset,-5px 5px 20px rgba(0,0,0,0.2) inset,0 0 3px rgba(0,0,0,0.2);
+  }
+
+  .pressed.black {
+    box-shadow:-1px -1px 2px rgba(255,255,255,0.2) inset,0 -2px 2px 3px rgba(0,0,0,0.6) inset,0 1px 2px rgba(0,0,0,0.5);
   }
 
 
