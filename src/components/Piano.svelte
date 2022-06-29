@@ -1,9 +1,12 @@
 <script lang="ts">
   import { NOTES } from "../constants/notes";
 
-  const handleKeyPress = (e: Event) => {
-    if(e.target instanceof HTMLElement) {
-      const audio = (<HTMLAudioElement>document.getElementById(e.target.dataset.note || ""));
+  let keyRefs: any = [];
+  let audioRefs: any = [];
+
+  const handleKeyPress = (index: number) => {
+    if(keyRefs[index] instanceof HTMLElement) {
+      const audio = audioRefs[index];
       if(audio) {
         audio.currentTime = 0;
         audio.play();
@@ -14,13 +17,16 @@
 </script>
 
 <div class="piano-container">
-  {#each NOTES as item}
-    <div data-note={item} class={item.length < 2 ? "key white" : "key black"} on:click={handleKeyPress}/>
+  {#each NOTES as item, i}
+    <div bind:this={keyRefs[i]} 
+    data-note={item} 
+    class={item.length < 2 ? "key white" : "key black"} 
+    on:click={()=>handleKeyPress(i)}/>
   {/each}
 </div>
 
-{#each NOTES as item}
-  <audio id={item} src={`src/assets/notes/${item}.mp3`}></audio>
+{#each NOTES as item, i}
+  <audio bind:this={audioRefs[i]} id={item} src={`src/assets/notes/${item}.mp3`}></audio>
 {/each}
 
 <style>
@@ -29,6 +35,7 @@
     --white-key-height: calc(var(--white-key-width) * 4);
     --black-key-width: 2rem;
     --black-key-height: calc(var(--black-key-width) * 4);
+    --box-shadow-height: 5px;
   }
 
   .piano-container {
@@ -42,7 +49,7 @@
     width: var(--white-key-width);
     height: var(--white-key-height);
     background-color: white;
-    box-shadow: 0px 5px 0px black;
+    box-shadow: 0px var(--box-shadow-height) 0px black;
   }
 
   .white:hover {
@@ -66,6 +73,10 @@
   .key {
     cursor: pointer;
     overflow: show;
+  }
+
+  .pressed {
+    transform:translateY(--box-shadow-height)
   }
 
 
