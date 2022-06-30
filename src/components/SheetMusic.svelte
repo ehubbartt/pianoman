@@ -17,7 +17,7 @@
     height: 32rem;
     width: 64rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    background-color: whitesmoke;
+    background-image: url("src/assets/img/paper.jpg");
     margin: 1rem;
     display: grid;
     place-items: center;

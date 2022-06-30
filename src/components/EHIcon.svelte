@@ -1,0 +1,1 @@
+<img src="src/assets/svg/EH.svg" alt="Teleparty Icon">

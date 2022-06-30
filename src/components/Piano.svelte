@@ -49,6 +49,8 @@
 	};
 
 	const handleMusicComplete = () => {
+		console.log("complete");
+		
 		if ($musicStore.sheet) {
 			if ($musicStore.url !== null) {
 				window.open(new URL($musicStore.url), '_blank')?.focus();
@@ -167,12 +169,7 @@
 			0 -2px 2px 3px rgba(0, 0, 0, 0.6) inset, 0 1px 2px rgba(0, 0, 0, 0.5);
 	}
 
-	.next::after {
-		content: '';
-		position: absolute;
-		height: 10px;
-		width: 10px;
-		background: black;
-		bottom: -10px;
+	.next {
+		background: hsla(60, 82%, 74%, 0.427);
 	}
 </style>

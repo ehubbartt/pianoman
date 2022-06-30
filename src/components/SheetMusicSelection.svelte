@@ -1,11 +1,22 @@
 <script lang="ts">
+	import { currentNote, currentNoteIndex } from '../stores/NoteStore';
 	import { musicStore } from '../stores/MusicStore';
 	import type { sheetMusicType } from '../types/sheetMusicType';
   import { sheetMusic } from "../constants/sheetMusic";
-
   const handleIconClick = (item: sheetMusicType) => {
     musicStore.set(item);
+    resetMusic();
   }  
+
+  const resetMusic = () => {
+    if ($musicStore.sheet) {
+      currentNote.set($musicStore.sheet[0]);
+      currentNoteIndex.set(0);
+      return;
+    }
+    currentNote.set(null);
+    currentNoteIndex.set(0);
+  }
 </script>
 
 <div class="sheet-music-container">
