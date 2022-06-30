@@ -49,7 +49,6 @@
 	};
 
 	const handleMusicComplete = () => {
-		console.log("complete");
 		
 		if ($musicStore.sheet) {
 			if ($musicStore.url !== null) {
@@ -132,8 +131,13 @@
 		border-radius: 0 5px 5px 5px;
 	}
 
-	.white:hover {
-		background-color: #ececec;
+	.white:hover:not(.next) {
+		background: #ececec;
+	}
+
+	.white.next:hover,
+	.black.next:hover {
+		background: hsl(60, 59%, 67%);
 	}
 
 	.black {
@@ -149,13 +153,13 @@
 		border-radius: 0 0 3px 3px;
 	}
 
-	.black:hover {
-		background-color: rgb(47, 47, 47);
+	.black:hover:not(.next) {
+		background: rgb(47, 47, 47);
 	}
 
 	.key {
 		cursor: pointer;
-		transition: all 0.2s ease-in-out;
+		transition: box-shadow 0.2s ease-in-out;
 		position: relative;
 	}
 
@@ -170,6 +174,7 @@
 	}
 
 	.next {
-		background: hsla(60, 82%, 74%, 0.427);
+		background: hsl(60, 82%, 74%);
 	}
+
 </style>

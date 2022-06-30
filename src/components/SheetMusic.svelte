@@ -1,8 +1,6 @@
 <script lang="ts">
   import { musicStore } from "../stores/MusicStore";
   import Staff from "./Staff.svelte"
-  console.log($musicStore);
-  
 </script>
 
 {#if $musicStore.name !== null}
